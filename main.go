@@ -4,7 +4,7 @@ import (
 	"fmt"
 	_ "net/http"
 	"github.com/mmcdole/gofeed"
-	"git.trapti.tech/mazrean/YuriBot/webhook"
+	"github.com/mazrean/TraqWebhook/webhook"
 	"github.com/jmoiron/sqlx"
 )
 
