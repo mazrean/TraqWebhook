@@ -1,5 +1,7 @@
 type: runtime
 
+use_mariadb: true
+
 startup: |
   go mod download
 	go build -o main
