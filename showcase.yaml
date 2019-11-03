@@ -4,6 +4,4 @@ entrypoint: ./main
 
 use_mariadb: true
 
-startup: |
-  go mod download
-	go build -o main main.go
+startup: make build
