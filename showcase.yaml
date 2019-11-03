@@ -6,4 +6,4 @@ use_mariadb: true
 
 startup: |
   go mod download
-	go build -o main
+	go build -o main main.go
