@@ -30,7 +30,7 @@ func UpdateFeed() error {
 	items := feed.Items
 
 	for _, item := range items {
-		var link string
+		link := ""
 		err := db.Get(&link, "SELECT link FROM feed WHERE link=?", item.Link)
 		if err != nil {
 			return err
