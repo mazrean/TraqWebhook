@@ -12,21 +12,24 @@ var (
 	FeedURL = os.Getenv("FEED_URL")
 )
 
-func UpdateFeed() error {
-	fp := gofeed.NewParser()
- 
-    feed, _ := fp.ParseURL(FeedURL)
-	items := feed.Items
-
+func Establish() error {
 	_db, err := sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", os.Getenv("MARIADB_USERNAME"), os.Getenv("MARIADB_PASSWORD"), os.Getenv("MARIADB_HOSTNAME"), "3306", os.Getenv("MARIADB_DATABASE")))
 	if err != nil {
 		return err
 	}
 	db = _db
-	
+	return nil
+}
+
+func UpdateFeed() error {
+	fp := gofeed.NewParser()
+
+    feed, _ := fp.ParseURL(FeedURL)
+	items := feed.Items
+
 	for _, item := range items {
 		var link string
-		err := db.Get(&link, "SELECT title FROM feed WHERE link=?", item.Link)
+		err := db.Get(&link, "SELECT link FROM feed WHERE link=?", item.Link)
 		if err != nil {
 			return err
 		}
