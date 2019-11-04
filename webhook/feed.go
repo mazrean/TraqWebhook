@@ -29,17 +29,18 @@ func UpdateFeed() error {
 
     feed, _ := fp.ParseURL(feedURL)
 	items := feed.Items
+	len := len(items)
 
-	for _, item := range items {
+	for i:=len-1;i>=0;i-- {
 		var link string
-		err := db.Get(&link, "SELECT link FROM feed WHERE link=?", item.Link)
+		err := db.Get(&link, "SELECT link FROM feed WHERE link=?", items[i].Link)
 		if err != nil {
-			body := "## [" + item.Title + "](" + item.Link + ")\n### " + item.Published + "\n" + item.Description
+			body := "## [" + items[i].Title + "](" + items[i].Link + ")\n### " + items[i].Published + "\n" + items[i].Description
 			err = postMessage(body)
 			if err != nil {
 				return err
 			}
-			_,err = db.Exec("INSERT INTO feed (title,link,published,description) VALUES (?,?,?,?)",item.Title,item.Link,item.Published,item.Description)
+			_,err = db.Exec("INSERT INTO feed (title,link,published,description) VALUES (?,?,?,?)",items[i].Title,items[i].Link,items[i].Published,items[i].Description)
 			if err != nil {
 				return err
 			}
