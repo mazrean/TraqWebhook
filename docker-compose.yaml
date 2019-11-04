@@ -8,6 +8,7 @@ services:
       MARIADB_HOSTNAME: mysql
       MARIADB_PORT: "3306"
       MARIADB_DATABASE: "yuri_bot"
+      FEED_URL: "http://yurinavi.com/feed"
     links:
       - mysql
     ports:

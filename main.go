@@ -10,13 +10,16 @@ import (
 var FeedURL = os.Getenv("FEED_URL")
 
 func main(){
-	webhook.Establish()
+	err := webhook.Establish()
+	if err!=nil {
+		fmt.Println(err)
+	}
 	fmt.Println("タイマーを開始")
 
 	t := 0
 	for {
 		t++
-		err := webhook.UpdateFeed()
+		err = webhook.UpdateFeed()
 		if err != nil{
 			fmt.Println(err)
 		}

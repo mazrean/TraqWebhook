@@ -9,9 +9,10 @@ import (
 
 var (
 	db *sqlx.DB
-	FeedURL = os.Getenv("FEED_URL")
+	feedURL = os.Getenv("FEED_URL")
 )
 
+//Establish DBの初期化
 func Establish() error {
 	_db, err := sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", os.Getenv("MARIADB_USERNAME"), os.Getenv("MARIADB_PASSWORD"), os.Getenv("MARIADB_HOSTNAME"), "3306", os.Getenv("MARIADB_DATABASE")))
 	if err != nil {
@@ -21,10 +22,11 @@ func Establish() error {
 	return nil
 }
 
+//UpdateFeed feedの更新
 func UpdateFeed() error {
 	fp := gofeed.NewParser()
 
-    feed, _ := fp.ParseURL(FeedURL)
+    feed, _ := fp.ParseURL(feedURL)
 	items := feed.Items
 
 	for _, item := range items {
@@ -33,7 +35,7 @@ func UpdateFeed() error {
 		if err != nil {
 			return err
 		}
-		if link != "" {
+		if link == "" {
 			body := "## [" + item.Title + "](" + item.Link + ")\n### " + item.Published + "\n" + item.Description
 			err = postMessage(body)
 			if err != nil {

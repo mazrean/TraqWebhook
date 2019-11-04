@@ -12,13 +12,13 @@ import (
 )
 
 var (
-	TraqWebhookId     = os.Getenv("TRAQ_WEBHOOK_ID")
-	TraqWebhookSecret = os.Getenv("TRAQ_WEBHOOK_SECRET")
+	traqWebhookID     = os.Getenv("TRAQ_WEBHOOK_ID")
+	traqWebhookSecret = os.Getenv("TRAQ_WEBHOOK_SECRET")
 )
 
 // postMessage Webhookにメッセージを投稿します
 func postMessage(message string) error {
-	url := "https://q.trap.jp/api/1.0/webhooks/" + TraqWebhookId
+	url := "https://q.trap.jp/api/1.0/webhooks/" + traqWebhookID
 	req, err := http.NewRequest("POST",
 		url,
 		strings.NewReader(message))
@@ -49,7 +49,7 @@ func postMessage(message string) error {
 }
 
 func generateSignature(message string) string {
-	mac := hmac.New(sha1.New, []byte(TraqWebhookSecret))
+	mac := hmac.New(sha1.New, []byte(traqWebhookSecret))
 	_, _ = mac.Write([]byte(message))
 	return hex.EncodeToString(mac.Sum(nil))
 }
