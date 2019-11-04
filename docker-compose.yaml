@@ -9,10 +9,13 @@ services:
       MARIADB_PORT: "3306"
       MARIADB_DATABASE: "yuri_bot"
       FEED_URL: "http://yurinavi.com/feed"
+      TRAQ_WEBHOOK_ID:
+      TRAQ_WEBHOOK_SECRET:
+      X_TRAQ_Channel_Id:
     links:
       - mysql
     ports:
-      - "3000:3000"
+      - "3002:3002"
     restart: always
   mysql:
     image: mysql:latest
@@ -20,7 +23,7 @@ services:
       MYSQL_ROOT_PASSWORD: "pass"
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     volumes:
-      - ./mysql/data:/var/lib/mariadb
+      - ./mysql/data:/var/lib/mysql
       - ./mysql/init:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"

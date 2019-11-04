@@ -5,6 +5,7 @@ import (
 	"os"
 	"github.com/mmcdole/gofeed"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var (
@@ -30,12 +31,9 @@ func UpdateFeed() error {
 	items := feed.Items
 
 	for _, item := range items {
-		link := "default"
+		var link string
 		err := db.Get(&link, "SELECT link FROM feed WHERE link=?", item.Link)
 		if err != nil {
-			return err
-		}
-		if link == "default" {
 			body := "## [" + item.Title + "](" + item.Link + ")\n### " + item.Published + "\n" + item.Description
 			err = postMessage(body)
 			if err != nil {

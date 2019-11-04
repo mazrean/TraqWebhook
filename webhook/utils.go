@@ -14,6 +14,7 @@ import (
 var (
 	traqWebhookID     = os.Getenv("TRAQ_WEBHOOK_ID")
 	traqWebhookSecret = os.Getenv("TRAQ_WEBHOOK_SECRET")
+	traqChannelID = os.Getenv("X_TRAQ_Channel_Id")
 )
 
 // postMessage Webhookにメッセージを投稿します
@@ -29,6 +30,9 @@ func postMessage(message string) error {
 
 	req.Header.Set(echo.HeaderContentType, echo.MIMETextPlainCharsetUTF8)
 	req.Header.Set("X-TRAQ-Signature", generateSignature(message))
+	if traqChannelID!=""{
+		req.Header.Set("X-TRAQ-Channel-Id", traqChannelID)
+	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -43,7 +47,7 @@ func postMessage(message string) error {
 		log.Printf("Error occured while reading response from traq webhook: %s\n", err)
 	}
 
-	log.Printf("Message sent to %s, message: %s, response: %s\n", url, message, response)
+	log.Printf("Message sent to %s,\nmessage: %s, response: %s\n", url, message, response)
 
 	return nil
 }
