@@ -1,3 +1,4 @@
+// Deprecated: use git.trap.jp/mazrean/YuriBot instead.
 module github.com/mazrean/TraqWebhook
 
 go 1.12
